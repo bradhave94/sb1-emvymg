@@ -1,0 +1,33 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { PageList } from '../components/Dashboard/PageList';
+import { supabase } from '../lib/supabase';
+
+const { cookies } = Astro;
+const hubspotToken = cookies.get('hubspot_token');
+---
+
+<DashboardLayout title="Dashboard - HubSpot Page Manager">
+  {hubspotToken ? (
+    <PageList client:load accessToken={hubspotToken.value} />
+  ) : (
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="px-4 py-5 sm:p-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          Connect HubSpot Account
+        </h3>
+        <div class="mt-2 max-w-xl text-sm text-gray-500">
+          <p>You need to connect your HubSpot account to manage pages.</p>
+        </div>
+        <div class="mt-5">
+          <a
+            href="/api/hubspot/auth"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+          >
+            Connect HubSpot
+          </a>
+        </div>
+      </div>
+    </div>
+  )}
+</DashboardLayout>

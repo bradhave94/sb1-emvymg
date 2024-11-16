@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { LoginForm } from '../components/Auth/LoginForm';
+import { supabase } from '../lib/supabase';
+
+const { cookies, redirect } = Astro;
+const session = await supabase.auth.getSession();
+
+if (session.data.session) {
+  return redirect('/dashboard');
+}
+---
+
+<Layout title="HubSpot Page Manager - Login">
+  <LoginForm client:load />
+</Layout>

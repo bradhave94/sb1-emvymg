@@ -1,0 +1,45 @@
+---
+import Layout from './Layout.astro';
+import { supabase } from '../lib/supabase';
+
+const { cookies, redirect } = Astro;
+const session = await supabase.auth.getSession();
+
+if (!session.data.session) {
+  return redirect('/');
+}
+
+const { title } = Astro.props;
+---
+
+<Layout title={title}>
+  <div class="min-h-screen bg-gray-100">
+    <header class="bg-white shadow">
+      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-900">{title}</h1>
+        <button
+          id="logout-button"
+          class="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-md hover:bg-primary-700"
+        >
+          Logout
+        </button>
+      </div>
+    </header>
+    <main>
+      <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <slot />
+      </div>
+    </main>
+  </div>
+</Layout>
+
+<script>
+  const logoutButton = document.getElementById('logout-button');
+  if (logoutButton) {
+    logoutButton.addEventListener('click', async () => {
+      const { supabase } = await import('../lib/supabase');
+      await supabase.auth.signOut();
+      window.location.href = '/';
+    });
+  }
+</script>
