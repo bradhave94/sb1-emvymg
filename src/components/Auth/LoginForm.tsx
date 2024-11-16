@@ -21,6 +21,8 @@ export const LoginForm = () => {
           theme="light"
           providers={['github']}
           redirectTo={`${siteUrl}/dashboard`}
+          magicLink={true}
+          showLinks={true}
         />
       </div>
     </div>
